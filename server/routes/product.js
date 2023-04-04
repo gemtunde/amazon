@@ -25,20 +25,94 @@
             })
         }
     });    
+    
+    
+    //GET request - get all product
+    router.get("/products", async (req, res) => {
+        try{
+            const products = await Product.find();
+
+            res.status(200).json({
+                success : true,
+                message : products
+            })
+        }
+        catch(err){
+             res.status(500).status({
+                status : false,
+                message : err.message
+            })
+        }
+    })
+    
+    //GET request -- get a single product
+    router.get("/products/:id", async (req, res) => {
+       try {
+         let product = await Product.findOne({_id : req.params.id});
+
+        res.status(200).json({
+             success : true,
+                message : product
+        })
+       } catch (err) {
+         res.status(500).status({
+                status : false,
+                message : err.message
+            })
+       }
+    })
+    
+    
+    
+    
+    //PUT request -- update a single product
+        router.put("/products/:id", async (req, res) => {
+       try {
+         let product = await Product.findOneAndUpdate(
+            {_id : req.params.id}, 
+           { 
+            $set : {
+                title: req.body.title,
+                description: req.body.description,
+                price: req.body.price,
+                stockQuantity: req.body.stockQuantity,
+                photo: req.body.photo,
+                owner: req.body.OwnerID,
+                category: req.body.categoryID,
+            }
+        },
+        {upsert: true}
+            );
+
+        res.status(200).json({
+             success : true,
+               updatedProduct : product
+        })
+       } catch (err) {
+         res.status(500).status({
+                status : false,
+                message : err.message
+            })
+       }
+    })
+    
+    
+    //DELETE request -  delete a single product
+    router.delete("/products/:id", async (req, res) => {
+       try {
+         let productDeleted = await Product.findOneAndDelete({_id : req.params.id});
+        if(productDeleted){
+             res.status(200).json({
+             success : true,
+                message : "Product deleted successfully"
+        })
+        }
+       
+       } catch (err) {
+         res.status(500).status({
+                status : false,
+                message : err.message
+            })
+       }
+    })
     module.exports = router;
-
-
-//GET request - get all product
-
-
-//GET request -- get a single product
-
-
-
-
-//PUT request -- update a single product
-
-
-
-//DELETE request -  delete a single product
-

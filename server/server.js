@@ -34,9 +34,17 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : false}));
 
-//require apis
+//require product apis
 const productRoutes = require("./routes/product");
 app.use("/api", productRoutes);
+
+//require category apis
+const categoryRoutes = require("./routes/category");
+app.use("/api", categoryRoutes);
+
+//require category apis
+const ownerRoutes = require("./routes/owner");
+app.use("/api", ownerRoutes);
 
 
 //port
