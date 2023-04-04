@@ -34,27 +34,9 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : false}));
 
-
-//get data from the server
-app.get('/', (req,res) => {
-    res.json("hello amazon clone")
-});
-
-//post data from frontend to server
-app.post("/", (req, res)=> {
-   let user = new User();
-   user.name = req.body.name ;
-   user.email = req.body.email ;
-   user.password = req.body.password ;
-
-//    user.save(err=>{
-//     err ? res.json(err) : res.json("user successfully saved");
-//    })
-   user.save()
-   .then(()=>res.json("user saved successful"))
-   .catch(err=>console.log(err))
-
-})
+//require apis
+const productRoutes = require("./routes/product");
+app.use("/api", productRoutes);
 
 
 //port
