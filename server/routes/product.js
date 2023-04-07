@@ -6,6 +6,8 @@
     router.post("/products", async (req, res)=> {
         try{
             let product = new Product();
+                product.ownerID = req.body.ownerID ;
+                product.categoryID = req.body.categoryID ;
                 product.title = req.body.title ;
                 product.description = req.body.description ;
                 product.price = req.body.price ;
@@ -15,7 +17,7 @@
                 await product.save();
                 res.json({
                     status: true,
-                    message: "successfully save"
+                    product: "successfully save"
                 })
         }
         catch(err){
@@ -34,7 +36,7 @@
 
             res.status(200).json({
                 success : true,
-                message : products
+                products : products
             })
         }
         catch(err){
@@ -52,7 +54,7 @@
 
         res.status(200).json({
              success : true,
-                message : product
+                product : product
         })
        } catch (err) {
          res.status(500).status({
@@ -104,7 +106,7 @@
         if(productDeleted){
              res.status(200).json({
              success : true,
-                message : "Product deleted successfully"
+                product : "Product deleted successfully"
         })
         }
        

@@ -11,7 +11,7 @@ const Category = require("../models/category");
        await category.save();
         res.json({
             success: true,
-            message: "category created successfully"
+            category: "category created successfully"
 
         });
 
@@ -32,7 +32,7 @@ const Category = require("../models/category");
 
             res.status(200).json({
                 success : true,
-                message : categories
+                 categories : categories
             })
         }
         catch (err){
@@ -50,7 +50,7 @@ const Category = require("../models/category");
 
             res.status(200).json({
                 success : true,
-                message : category
+                 category : category
             })
         }
         catch (err){
@@ -94,7 +94,7 @@ const Category = require("../models/category");
         if(categoryDeleted){
              res.status(200).json({
              success : true,
-                message : "Product deleted successfully"
+                DeleteCategory : "Product deleted successfully"
         })
         }
        

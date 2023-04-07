@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const cors = require("cors");
 
 //models
 const User = require("./models/user")
@@ -30,6 +31,7 @@ mongoose
      .catch(err => console.log( err ));
 
 //midddleware
+app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : false}));

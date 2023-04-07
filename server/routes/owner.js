@@ -17,7 +17,7 @@
            await owner.save();
             res.status(200).json({
                 success : true,
-                message: "Owner successfully created"
+                owner: "Owner successfully created"
             });
 
         }
@@ -37,7 +37,7 @@
 
             res.status(200).json({
                 success : true,
-                message: owners
+              owners: owners
             })
         }
         catch(err){
@@ -55,7 +55,7 @@
 
             res.status(200).json({
                 success : true,
-                message: owner
+                owner: owner
             })
         }
         catch(err){
@@ -100,7 +100,7 @@
         if(ownerDeleted){
              res.status(200).json({
              success : true,
-                message : "Product deleted successfully"
+                DeletedOwner : "Product deleted successfully"
         })
         }
        
