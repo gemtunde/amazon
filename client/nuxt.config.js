@@ -1,57 +1,88 @@
+const URL = "http://localhost:3000";
+
 export default {
-  // Global page headers: https://go.nuxtjs.dev/config-head
+  mode: "universal",
+  /*
+   ** Headers of the page
+   */
   head: {
-    title: 'client',
+    title: process.env.npm_package_name || "",
+    script: [{ src: "https://js.stripe.com/v3" }],
     meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
-      { name: 'format-detection', content: 'telephone=no' }
+      { charset: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      {
+        hid: "description",
+        name: "description",
+        content: process.env.npm_package_description || ""
+      }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+      { rel: "stylesheet", href: "/css/font-awesome/css/all.css" },
+      { rel: "stylesheet", href: "/css/default.css" }
     ]
   },
-
-  // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-  ],
-
-  // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
-  ],
-
-  // Auto import components: https://go.nuxtjs.dev/config-components
-  components: true,
-
-  // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [
-  ],
-
-  // Modules: https://go.nuxtjs.dev/config-modules
+  /*
+   ** Customize the progress-bar color
+   */
+  loading: { color: "#fff" },
+  /*
+   ** Global CSS
+   */
+  css: [],
+  /*
+   ** Plugins to load before mounting the App
+   */
+  plugins: [{ src: "~/plugins/localStorage.js", ssr: false }],
+  /*
+   ** Nuxt.js dev-modules
+   */
+  buildModules: [],
+  /*
+   ** Nuxt.js modules
+   */
   modules: [
-    // https://go.nuxtjs.dev/bootstrap
-    'bootstrap-vue/nuxt',
-    // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios',
-    // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/pwa',
+    // Doc: https://bootstrap-vue.js.org
+    "bootstrap-vue/nuxt",
+    // Doc: https://axios.nuxtjs.org/usage
+    "@nuxtjs/axios",
+    "@nuxtjs/pwa",
+    "@nuxtjs/auth"
   ],
-
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
+  /*
+   ** Axios module configuration
+   ** See https://axios.nuxtjs.org/options
+   */
   axios: {
-    // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/',
+    proxy: true,
+    baseURL: URL
   },
 
-  // PWA module configuration: https://go.nuxtjs.dev/pwa
-  pwa: {
-    manifest: {
-      lang: 'en'
-    }
+  proxy: {
+    "/api": URL
   },
 
-  // Build Configuration: https://go.nuxtjs.dev/config-build
+  /*
+   ** Build configuration
+   */
   build: {
+    /*
+     ** You can extend webpack config here
+     */
+    extend(config, ctx) {}
+  },
+
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            propertyName: "token"
+          },
+          logout: true
+        }
+      }
+    }
   }
-}
+};
