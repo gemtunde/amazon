@@ -23,8 +23,16 @@
                         </form>
                         <br />
                         <ul>
-                            <li class="list-group-item" v-for="category in categories" :key="category._id">{{ category.type
-                            }}</li>
+                            <li class="list-group-item d-flex"
+                             v-for="(category, index) in categories"
+                              :key="category._id">
+                              {{ category.type
+                            }}
+                         <div class="a-row ml-5">
+                             <nuxt-link :to="`/category/${category._id}`" class="a-button-history margin-right-10">Update</nuxt-link>
+                             <a href="#" class="a-button-history margin-right-10" @click="onDeleteCategory(category._id, index)" >Delete</a>
+                             </div>    
+                        </li>
                         </ul>
                     </div>
                 </div>
@@ -64,6 +72,16 @@ export default {
             } catch (error) {
                 console.log(error)
             }
+        },
+      async  onDeleteCategory(id, index){
+        try {
+            let response =  await this.$axios.$delete(`http://localhost:3000/api/categories/${id}`);
+            if(response.status){
+                this.categories.splice(index, 1)
+            }
+        } catch (error) {
+            console.log(error)
+        }
         }
     }
 }
