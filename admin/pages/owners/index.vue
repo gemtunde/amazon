@@ -38,8 +38,15 @@
                         </form>
                         <br />
                         <ul>
-                            <li class="list-group-item" v-for="owner in owners" :key="owner._id">
+                            <li
+                             class="list-group-item d-flex"
+                              v-for="(owner, index) in owners"
+                               :key="owner._id">
                                 {{ owner.name }}
+                                 <div class="a-row ml-5">
+                                 <nuxt-link :to="`/owners/${owner._id}`" class="a-button-history margin-right-10">Update</nuxt-link>
+                                 <a href="#" class="a-button-history margin-right-10" @click="onOwnerDelete(owner._id, index)" >Delete</a>
+                                 </div>   
                             </li>
                         </ul>
                     </div>
@@ -75,13 +82,24 @@ export default {
     },
     methods: {
         async onAddOwner() {
-            console.log("this form data", this.formData)
+            //console.log("this form data", this.formData)
             try {
                 await this.$axios.$post("http://localhost:3000/api/owners", this.formData);
                 this.owners.push(this.formData);
                 this.formData = "";
                 // this.formData.description = "";
                 // this.formData.photo = "";
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async onOwnerDelete(id, index){
+            try {
+                let response = await this.$axios.$delete(`http://localhost:3000/api/owners/${id}`);
+                if(response.status){
+                    this.owners.splice(index, 1)
+                }
+                
             } catch (error) {
                 console.log(error)
             }
