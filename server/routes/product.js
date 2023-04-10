@@ -33,6 +33,7 @@
     router.get("/products", async (req, res) => {
         try{
             const products = await Product.find();
+             //.populate('owner category').exec();
 
             res.status(200).json({
                 success : true,
@@ -51,6 +52,7 @@
     router.get("/products/:id", async (req, res) => {
        try {
          let product = await Product.findOne({_id : req.params.id});
+         //.populate('owner category').exec();
 
         res.status(200).json({
              success : true,
