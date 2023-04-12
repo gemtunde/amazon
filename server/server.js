@@ -48,6 +48,10 @@ app.use("/api", categoryRoutes);
 const ownerRoutes = require("./routes/owner");
 app.use("/api", ownerRoutes);
 
+//require user apis
+const userRoutes = require("./routes/auth");
+app.use("/api", userRoutes);
+
 
 //port
 app.listen(3000, (err)=> {
