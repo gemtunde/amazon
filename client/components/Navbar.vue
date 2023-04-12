@@ -76,6 +76,14 @@
                 </span>
               </a>
               <span class="icp-nav-link-border"></span>
+              <template v-if="$auth.$state.loggedIn"> 
+                <nuxt-link class="nav-a nav-a-2" to="/register" id="nav-link-accountList" tabindex="0">
+                  <span class="nav-line-1">Hello, </span>
+                  <span class="nav-line-2"> {{ $auth.$state.user.name }}</span>
+                 
+                </nuxt-link>
+              </template>
+              <template v-else>             
               <nuxt-link class="nav-a nav-a-2" to="/register" id="nav-link-accountList" tabindex="0">
                 <span class="nav-line-1">Hello, Sign in</span>
                 <span class="nav-line-2">
@@ -83,6 +91,7 @@
                   <span class="nav-icon nav-arrow" style="visibility:visible"></span>
                 </span>
               </nuxt-link>
+               </template>
               <nuxt-link class="nav-a nav-a-2 nav-single-row-link" to="/orders">
                 <span class="nav-line-1"></span>
                 <span class="nav-line-2"> Orders </span>
