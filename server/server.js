@@ -56,6 +56,10 @@ app.use("/api", userRoutes);
 const reviewRoutes = require("./routes/review");
 app.use("/api", reviewRoutes);
 
+//require address apis
+const addressRoutes = require("./routes/address");
+app.use("/api", addressRoutes);
+
 
 //port
 app.listen(3000, (err)=> {
