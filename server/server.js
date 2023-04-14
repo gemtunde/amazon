@@ -52,6 +52,10 @@ app.use("/api", ownerRoutes);
 const userRoutes = require("./routes/auth");
 app.use("/api", userRoutes);
 
+//require reviews apis
+const reviewRoutes = require("./routes/review");
+app.use("/api", reviewRoutes);
+
 
 //port
 app.listen(3000, (err)=> {
