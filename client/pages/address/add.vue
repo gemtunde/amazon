@@ -49,8 +49,12 @@
                                     <div class="a-spacing-top-medium">
                                         <label style="margin-bottom: 0px;">Country/Region</label>
                                         <select class="a-select-option" v-model="country">
-                                            <option value>--</option>
-                                            <option></option>
+                                           <option
+                                            v-for="country in countries"
+                                             :key="country.alpha2Code"
+                                             :value="country.name.common"
+                                             
+                                             > {{ country.name.common }}</option>
                                         </select>
                                     </div>
                                     <!-- Full name -->
@@ -136,7 +140,7 @@
                                     <div class="a-spacing-top-large">
                                         <span class="a-button-register">
                                             <span class="a-button-inner">
-                                                <span class="a-button-text">Add address</span>
+                                                <span class="a-button-text" @click="onAddAddress">Add address</span>
                                             </span>
                                         </span>
                                     </div>
@@ -155,9 +159,20 @@
 
 <script>
     export default {
+        async asyncData({$axios}){
+            try {
+                let countries = await $axios.$get("/api/countries");
+               // console.log("countries is ", countries)
+                return{
+                    countries : countries
+                }
+            } catch (error) {
+                 console.log(error)
+            }
+        },
         data(){
             return{
-            country: "",
+            country: "Namibia",
             fullName: "",
             streetAddress1: "",
             streetAddress2: "",
@@ -175,8 +190,7 @@
                  let data = {
                     country: this.country,
                     fullName: this.fullName,
-                    streetAddress1: this.streetAddress1,
-                    streetAddress2: this.streetAddress2,
+                    streetAddress: this.streetAddress1 + "" + this.streetAddress2 ,
                     city: this.city,
                     state: this.state,
                     zipCode: this.zipCode,
@@ -185,7 +199,7 @@
                     securityCode: this.securityCode,
                 };
                 let response = await this.$axios.$post("/api/addresses", data);
-                if(response.status){
+                if(response.success){
                     this.$router.push("/")
                 }
                } catch (error) {
