@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const verifyToken = require("../middlewares/verify-token");
 const Address = require("../models/address");
+const User = require("../models/user");
 const axios = require("axios");
 
 //POST request -create new Address
@@ -35,11 +36,11 @@ const axios = require("axios");
     }
   });
   
-  //get address api
+  //get all address api
   router.get("/addresses", verifyToken, async (req,res) => {
 
         try {
-            let addresses = await Address.find({_id : req.decoded._id});
+            let addresses = await Address.find({user : req.decoded._id});
 
             res.json({
                 success : true,
@@ -68,8 +69,22 @@ const axios = require("axios");
     });
 }
   });
-
-  //put address 
+  //get single address
+    router.get("/addresses/:id", verifyToken, async (req, res) => {
+        try {
+            let foundAddress = await Address.findOne({_id : req.params.id});
+            res.json({
+                success : true,
+                address : foundAddress
+            })
+        } catch (error) {
+              res.status(500).json({
+            success: false,
+            message: error.message
+    });
+        }
+    })
+  //put/update single address 
   router.put("/addresses/:id", verifyToken, async (req, res) => {
     try {
         let foundAddress = await Address.findOne({_id : req.params.id});
@@ -101,9 +116,9 @@ const axios = require("axios");
   });
 
   //delete address 
-  router.delete("/addresses/:id". verifyToken, async(req, res)=> {
+  router.delete("/addresses/:id", verifyToken, async(req, res)=> {
     try {
-        let deletedAddress = await Address.remove({ user : req.decoded._id, _id: req.params.id});
+        let deletedAddress = await Address.findByIdAndDelete({ user : req.decoded._id, _id: req.params.id});
         if(deletedAddress){
             res.json({
                 success :true,

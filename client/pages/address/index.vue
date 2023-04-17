@@ -26,7 +26,7 @@
                             <h1 class="a-spacing-medium a-spacing-top-medium">Your Addresses</h1>
                             <!-- Message from Server -->
                             <div class="a-section a-spacing-none a-spacing-top-small">
-                                <b>Message from Server</b>
+                                <b>{{ message }}</b>
                             </div>
                             <div class="a-spacing-double-large">
                                 <div class="row a-spacing-micro">
@@ -42,7 +42,10 @@
                                         </nuxt-link>
                                     </div>
                                     <!-- Address -->
-                                    <div class="col-lg-4 col-md-4 col-sm-12 pl-md-0 pb-2">
+                                    <div class="col-lg-4 col-md-4 col-sm-12 pl-md-0 pb-2" 
+                                    v-for="(address, index) in addresses"
+                                    :key="address._id"
+                                    >
                                         <div class="a-box a-spacing-none normal-desktop-address-tile">
                                             <div class="a-box-inner a-padding-none">
                                                 <div class="address-section-no-default">
@@ -51,29 +54,29 @@
                                                             <li>
                                                                 <h5>
                                                                     <!-- Address Fullname -->
-                                                                    <b>Address fullname</b>
+                                                                    <b>Address fullname : {{ address.fullName }}</b>
                                                                 </h5>
                                                             </li>
                                                             <!-- Address street address -->
-                                                            <li>streetAddress</li>
+                                                            <li>streetAddress :  {{ address.streetAddress }}</li>
                                                             <!-- Address city state zip code -->
-                                                            <li>city, state zipCode</li>
+                                                            <li>city, state zipCode :  {{ address.city }} -  {{ address.state }} -  {{ address.zipCode }}</li>
                                                             <!-- Address country -->
-                                                            <li>country</li>
+                                                            <li>country :  {{ address.country }}</li>
                                                             <!-- Address Phone number -->
-                                                            <li>Phone number: phonenumber</li>
+                                                            <li>Phone number:  {{ address.phoneNumber }}</li>
                                                         </ul>
                                                     </div>
                                                 </div>
                                             </div>
                                             <!-- Delete Button -->
                                             <div class="edit-address-desktop-link">
-                                                <a href="#">Edit</a>
+                                                <nuxt-link :to="`/address/${address._id}`">Edit</nuxt-link>
                                                 &nbsp; | &nbsp;
-                                                <a href="#">Delete</a>
+                                                <a href="#" @click="onDeleteAddress(address._id, index)">Delete</a>
                                                 &nbsp; | &nbsp;
                                                 <!-- Set Address as Default -->
-                                                <a href="#">Set as Default</a>
+                                                <a href="#" @click="onSetDefault(address._id)">Set as Default</a>
                                             </div>
                                         </div>
                                     </div>
@@ -89,6 +92,54 @@
     </main>
     <!--/MAIN-->
 </template>
+<script>
+    export default {
+        async asyncData( {$axios}){
+            try {
+                let addresses = await $axios.$get("/api/addresses");
+                    console.log("addresses are in", addresses.addresses)
+                return{
+                    addresses : addresses.addresses
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        data(){
+            return {
+                message : ""
+            }
+        },
+    methods : {
+        async onDeleteAddress(id, index){
+            try {
+                let deletedAddress = await this.$axios.$delete(`/api/addresses/${id}`);
 
+                if(deletedAddress.success){
+                    this.message = deletedAddress.message
+                    this.addresses.splice(index, 1)
+                }
+            } catch (error) {
+                 this.message = error.message
+                 console.log(error)
+            }
+        },
+
+        async onSetDefault(id){
+            try {
+                let response = await this.$axios.$put(`/api/addresses/set/default`, {id : id});
+
+                if (response.success) {
+                    this.message = response.message
+                    await this.$auth.fetchUser();
+                }
+            } catch (error) {
+                this.message = error.message
+                console.log(error)
+            }
+        }
+    }
+    }
+</script>
 
 

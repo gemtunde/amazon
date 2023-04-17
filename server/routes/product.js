@@ -51,7 +51,7 @@
     //GET request -- get a single product
     router.get("/products/:id", async (req, res) => {
        try {
-         let product = await Product.findOne({_id : req.params.id});
+         let product = await Product.findOne({_id : req.params.id})//.populate("owner category").exec();
          //.populate('owner category').exec();
 
         res.status(200).json({
