@@ -260,12 +260,12 @@
                 </div>
 
                 <div class="a-section">
-                  <div class="a-button-stack">
+                  <div class="a-button-stack"  @click="addProductToCart(product)">
                     <span class="a-spacing-small a-button-primary a-button-icon">
                       <span class="a-button-inner">
                         <i class="a-icon a-icon-cart"></i>
                         <input type="submit" name="submit.add-to-cart" class="a-button-input" />
-                        <span class="a-button-text">Add to Cart</span>
+                        <span class="a-button-text">Adding to Cart</span>
                       </span>
                     </span>
                   </div>
@@ -365,9 +365,9 @@
   </main>
 </template>
 <script>
-
+//import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 export default {
-
   async asyncData({ $axios, params }) {
     try {
       let response = await $axios.$get(`/api/products/${params.id}`);  
@@ -379,6 +379,9 @@ export default {
     } catch (err) {
       console.log(err);
     }
+  },
+  methods : {
+    ...mapActions(["addProductToCart"])
   }
 
 };
