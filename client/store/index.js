@@ -13,7 +13,7 @@ export const actions = {
     if (!cartProduct) {
       commit("pushProductToCart", product);
     } else {
-      commit("incrementProductQty", product);
+      commit("incrementProductQty", cartProduct);
     }
 
     commit("incrementCartLength");
@@ -40,6 +40,40 @@ export const mutations = {
       });
     }
   },
+  /* 
+  1. find product in cart
+  2. change quantity of the product
+  3. update length of the product
+  4. replace old product with new product
+  */
+  changeQty(state, {product, qty}){
+    let cartProduct = state.cart.find(prod => prod._id === product._id);
+
+    cartProduct.quantity = qty ;
+
+    state.cartLength = 0;
+    if (state.cart.length > 0) {
+      state.cart.map(product => {
+        state.cartLength += product.quantity;
+      });
+    };
+
+    let indexOfProduct = state.cart.indexOf(cartProduct);
+    state.cart.splice(indexOfProduct, 1, cartProduct)
+  },
+   /* 
+  1. remove prod quantity from cartlength
+  2. get index of product to delete
+  3. delete from from the state
+  */
+ removeProduct(state, product){
+  state.cartLength -= product.quantity
+
+  let indexOfProduct = state.cart.indexOf(product);
+
+  state.cart.splice(indexOfProduct, 1);
+ }
+  
 };
  export const getters = {
     getCartLength(state){
@@ -47,5 +81,13 @@ export const mutations = {
     },
     getCart(state){
       return state.cart;
+    },
+    getCartTotalPrice(state){
+      let total =0 ;
+      state.cart.map(product => {
+       total += product.price * product.quantity
+      });
+
+      return total
     }
   }
