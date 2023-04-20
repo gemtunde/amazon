@@ -60,6 +60,10 @@ app.use("/api", reviewRoutes);
 const addressRoutes = require("./routes/address");
 app.use("/api", addressRoutes);
 
+//require payment apis
+const paymentRoutes = require("./routes/payment");
+app.use("/api", paymentRoutes);
+
 
 //port
 app.listen(3000, (err)=> {
