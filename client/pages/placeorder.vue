@@ -31,7 +31,7 @@
                     <div class="a-row">
                       <div class="displayAddressDiv">
                         <!-- User's address -->
-                        <ul class="displayAddressUL">
+                        <!-- <ul class="displayAddressUL">
                           <li>fullName: {{ $auth.$state.user.address.fullName }}</li>
                           <li>street Address: {{ $auth.$state.user.address.streetAddress }}</li>
                           <li>city: {{ $auth.$state.user.address.city }}</li>
@@ -40,7 +40,7 @@
                             Phone:
                             <span dir="ltr">phoneNumber : {{ $auth.$state.user.address.phoneNumber }}</span>
                           </li>
-                        </ul>
+                        </ul> -->
                       </div>
                     </div>
                   </div>
